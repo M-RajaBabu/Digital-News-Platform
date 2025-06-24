@@ -1,0 +1,274 @@
+### Authentication
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "username": "testuser",
+  "password": "password123",
+  "firstName": "John",
+  "lastName": "Doe",
+  "dateOfBirth": "1990-01-01",
+  "phone": "+1234567890",
+  "location": "New York"
+}
+
+### Login (capture token)
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+
+> {% client.global.set("authToken", response.body.token); %}
+
+### Social Login
+POST http://localhost:3000/api/auth/social-login
+Content-Type: application/json
+
+{
+  "idToken": "google-id-token-here"
+}
+
+### News Feed
+GET http://localhost:3000/api/news/feed
+
+### Trending News
+GET http://localhost:3000/api/news/trending
+
+### Breaking News
+GET http://localhost:3000/api/news/breaking
+
+### Articles
+GET http://localhost:3000/api/articles
+POST http://localhost:3000/api/articles
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Sample Article",
+  "content": "This is a sample article.",
+  "categoryId": "{{categoryId}}",
+  "authorId": "uuid"
+}
+
+> {% client.global.set("articleId", response.body.id || response.body.data?.id); %}
+
+GET http://localhost:3000/api/articles/{{articleId}}
+PUT http://localhost:3000/api/articles/{{articleId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Updated Title"
+}
+DELETE http://localhost:3000/api/articles/{{articleId}}
+Authorization: Bearer {{authToken}}
+
+### Article View
+POST http://localhost:3000/api/articles/{{articleId}}/view
+
+### Article Comments
+GET http://localhost:3000/api/articles/{{articleId}}/comments
+
+### Comments
+GET http://localhost:3000/api/comments
+POST http://localhost:3000/api/comments
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "articleId": "{{articleId}}",
+  "content": "Nice article!"
+}
+POST http://localhost:3000/api/comments/{{commentId}}/vote
+Authorization: Bearer {{authToken}}
+
+POST http://localhost:3000/api/comments/{{commentId}}/moderate
+Authorization: Bearer {{authToken}}
+
+### Bookmarks
+GET http://localhost:3000/api/bookmarks
+Authorization: Bearer {{authToken}}
+POST http://localhost:3000/api/bookmarks
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "articleId": "{{articleId}}"
+}
+DELETE http://localhost:3000/api/bookmarks/{{bookmarkId}}
+Authorization: Bearer {{authToken}}
+
+### E-Paper
+GET http://localhost:3000/api/epaper/editions
+GET http://localhost:3000/api/epaper/editions/{{date}}/{{city}}
+POST http://localhost:3000/api/epaper/editions/{{date}}/{{city}}/download
+Authorization: Bearer {{authToken}}
+
+### Games
+GET http://localhost:3000/api/games
+GET http://localhost:3000/api/games/{{gameId}}
+GET http://localhost:3000/api/games/crosswords
+GET http://localhost:3000/api/games/crosswords/{{crosswordId}}
+POST http://localhost:3000/api/games/crosswords/{{crosswordId}}/solve
+Authorization: Bearer {{authToken}}
+
+{
+  "solution": "answer"
+}
+
+### Notifications
+GET http://localhost:3000/api/notifications
+Authorization: Bearer {{authToken}}
+PUT http://localhost:3000/api/notifications/settings
+Authorization: Bearer {{authToken}}
+POST http://localhost:3000/api/notifications/register-device
+Authorization: Bearer {{authToken}}
+
+{
+  "deviceToken": "token"
+}
+
+### Polls
+GET http://localhost:3000/api/polls/active
+GET http://localhost:3000/api/polls/{{pollId}}
+POST http://localhost:3000/api/polls/{{pollId}}/vote
+Authorization: Bearer {{authToken}}
+
+{
+  "optionId": "uuid"
+}
+
+### Subscriptions
+GET http://localhost:3000/api/subscriptions/plans
+POST http://localhost:3000/api/subscriptions/subscribe
+Authorization: Bearer {{authToken}}
+GET http://localhost:3000/api/subscriptions/status
+Authorization: Bearer {{authToken}}
+
+### Users
+GET http://localhost:3000/api/users/profile
+Authorization: Bearer {{authToken}}
+GET http://localhost:3000/api/users/preferences
+Authorization: Bearer {{authToken}}
+PUT http://localhost:3000/api/users/preferences
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "preferences": {}
+}
+GET http://localhost:3000/api/users/history
+Authorization: Bearer {{authToken}}
+
+### Weather
+GET http://localhost:3000/api/weather
+GET http://localhost:3000/api/weather/{{city}}
+GET http://localhost:3000/api/weather/{{city}}/forecast
+
+### Categories
+GET http://localhost:3000/api/categories
+GET http://localhost:3000/api/categories/{{categoryId}}
+GET http://localhost:3000/api/categories/{{categoryId}}/articles
+
+### Authors
+GET http://localhost:3000/api/authors
+GET http://localhost:3000/api/authors/{{authorId}}
+GET http://localhost:3000/api/authors/{{authorId}}/articles
+POST http://localhost:3000/api/authors/{{authorId}}/follow
+Authorization: Bearer {{authToken}}
+
+### Newsletter
+POST http://localhost:3000/api/newsletter/subscribe
+POST http://localhost:3000/api/newsletter/unsubscribe
+PUT http://localhost:3000/api/newsletter/{{email}}/preferences
+GET http://localhost:3000/api/newsletter/templates
+Authorization: Bearer {{authToken}}
+POST http://localhost:3000/api/newsletter/send
+Authorization: Bearer {{authToken}}
+GET http://localhost:3000/api/newsletter/stats
+Authorization: Bearer {{authToken}}
+
+### Search
+GET http://localhost:3000/api/search?q=example
+
+### Create Category (capture categoryId)
+POST http://localhost:3000/api/categories
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Test Category",
+  "slug": "test-category",
+  "description": "A test category"
+}
+
+> {% client.global.set("categoryId", response.body.id || response.body.data?.id); %}
+
+### Create Article (capture articleId)
+POST http://localhost:3000/api/articles
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Sample Article",
+  "content": "This is a sample article.",
+  "categoryId": "{{categoryId}}"
+}
+
+> {% client.global.set("articleId", response.body.id || response.body.data?.id); %}
+
+### Get Article by ID
+GET http://localhost:3000/api/articles/{{articleId}}
+
+### Get Category by ID
+GET http://localhost:3000/api/categories/{{categoryId}}
+
+### Add Comment to Article (requires token)
+POST http://localhost:3000/api/comments
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "articleId": "{{articleId}}",
+  "content": "Nice article!"
+}
+
+### Get All Articles
+GET http://localhost:3000/api/articles
+
+### Get All Categories
+GET http://localhost:3000/api/categories
+
+### Get Comments
+GET http://localhost:3000/api/comments
+
+### Add Bookmark (requires token)
+POST http://localhost:3000/api/bookmarks
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "articleId": "{{articleId}}"
+}
+
+### Get Bookmarks (requires token)
+GET http://localhost:3000/api/bookmarks
+Authorization: Bearer {{authToken}}
+
+### Get User Profile (requires token)
+GET http://localhost:3000/api/users/profile
+Authorization: Bearer {{authToken}}
+
+### Get User Preferences (requires token)
+GET http://localhost:3000/api/users/preferences
+Authorization: Bearer {{authToken}}
+
+### Get Reading History (requires token)
+GET http://localhost:3000/api/users/history
+Authorization: Bearer {{authToken}}
+
+### All other endpoints remain as before, but now all protected endpoints use {{authToken}} automatically. 
