@@ -1,5 +1,9 @@
 # Digital News Platform
 
+[![Build Status](https://github.com/M-RajaBabu/Digital-News-Platform/actions/workflows/ci.yml/badge.svg)](https://github.com/M-RajaBabu/Digital-News-Platform/actions)
+[![Last Commit](https://img.shields.io/github/last-commit/M-RajaBabu/Digital-News-Platform)](https://github.com/M-RajaBabu/Digital-News-Platform/commits/master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A complete backend API for a Digital News Platform similar to Times of India, built with Node.js, Express.js, and SQLite.
 
 ## 🚀 Features
