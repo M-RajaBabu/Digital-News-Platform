@@ -1,0 +1,507 @@
+# API Endpoints Documentation
+
+## Authentication
+
+### POST /api/auth/register
+- **Description:** Register a new user.
+- **Request Body:**
+  ```json
+  {
+    "email": "user@example.com",
+    "username": "testuser",
+    "password": "password123",
+    "firstName": "John",
+    "lastName": "Doe",
+    "dateOfBirth": "1990-01-01",
+    "phone": "+1234567890",
+    "location": "New York"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "token": "jwt_token",
+    "user": { ...user fields... }
+  }
+  ```
+
+### POST /api/auth/login
+- **Description:** User login.
+- **Request Body:**
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "password123"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "token": "jwt_token",
+    "user": { ...user fields... }
+  }
+  ```
+
+### POST /api/auth/social-login
+- **Description:** Social login (Google).
+- **Request Body:**
+  ```json
+  {
+    "idToken": "google_id_token"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "token": "jwt_token",
+    "user": { ...user fields... }
+  }
+  ```
+
+---
+
+## News
+
+### GET /api/news/feed
+- **Description:** Get personalized news feed.
+- **Query Parameters:** `page`, `limit`
+- **Response:**
+  ```json
+  {
+    "articles": [ ... ],
+    "page": 1,
+    "limit": 10,
+    "total": 100
+  }
+  ```
+
+### GET /api/news/trending
+- **Description:** Get trending news.
+- **Query Parameters:** `timeWindow`, `limit`
+- **Response:**
+  ```json
+  {
+    "articles": [ ... ]
+  }
+  ```
+
+### GET /api/news/breaking
+- **Description:** Get breaking news.
+- **Response:**
+  ```json
+  {
+    "message": "Breaking news (to be implemented)"
+  }
+  ```
+
+---
+
+## Articles
+
+### GET /api/articles
+- **Description:** Get all articles (with optional filters).
+- **Query Parameters:** `page`, `limit`, `category`, `author`
+- **Response:**
+  ```json
+  {
+    "articles": [ ... ],
+    "page": 1,
+    "limit": 10,
+    "total": 100
+  }
+  ```
+
+### GET /api/articles/:id
+- **Description:** Get article by ID.
+- **Response:**
+  ```json
+  {
+    "article": { ... }
+  }
+  ```
+
+### POST /api/articles
+- **Description:** Create a new article (authenticated).
+- **Request Body:**
+  ```json
+  {
+    "title": "Title",
+    "summary": "Summary",
+    "content": "Content...",
+    "categoryId": "uuid",
+    "tags": ["tag1", "tag2"]
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "article": { ... }
+  }
+  ```
+
+### PUT /api/articles/:id
+- **Description:** Update an article (authenticated).
+- **Request Body:**
+  ```json
+  {
+    "title": "Updated Title",
+    "content": "Updated content..."
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "article": { ... }
+  }
+  ```
+
+### DELETE /api/articles/:id
+- **Description:** Delete an article (authenticated).
+- **Response:**
+  ```json
+  {
+    "success": true
+  }
+  ```
+
+### POST /api/articles/:id/view
+- **Description:** Track article view (authenticated).
+- **Response:**
+  ```json
+  {
+    "success": true
+  }
+  ```
+
+### GET /api/articles/:id/comments
+- **Description:** Get comments for an article.
+- **Response:**
+  ```json
+  {
+    "comments": [ ... ]
+  }
+  ```
+
+---
+
+## Comments
+
+### POST /api/comments
+- **Description:** Post a comment (authenticated).
+- **Request Body:**
+  ```json
+  {
+    "articleId": "uuid",
+    "content": "This is a comment",
+    "parentId": "uuid" // optional
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "comment": { ... }
+  }
+  ```
+
+### POST /api/comments/:id/vote
+- **Description:** Vote on a comment (authenticated).
+- **Request Body:**
+  ```json
+  {
+    "vote": "up" // or "down"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "success": true
+  }
+  ```
+
+---
+
+## Categories
+
+### GET /api/categories
+- **Description:** Get all categories.
+- **Response:**
+  ```json
+  {
+    "categories": [ ... ]
+  }
+  ```
+
+### GET /api/categories/:id/articles
+- **Description:** Get articles by category.
+- **Query Parameters:** `page`, `limit`
+- **Response:**
+  ```json
+  {
+    "category": { ... },
+    "articles": [ ... ]
+  }
+  ```
+
+---
+
+## Bookmarks
+
+### GET /api/bookmarks
+- **Description:** Get user bookmarks (authenticated).
+- **Response:**
+  ```json
+  {
+    "bookmarks": [ ... ]
+  }
+  ```
+
+### POST /api/bookmarks
+- **Description:** Add a bookmark (authenticated).
+- **Request Body:**
+  ```json
+  {
+    "articleId": "uuid",
+    "collectionId": "uuid",
+    "notes": "Notes",
+    "tags": ["tag1"],
+    "isPublic": false
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "bookmark": { ... }
+  }
+  ```
+
+### DELETE /api/bookmarks/:id
+- **Description:** Remove a bookmark (authenticated).
+- **Response:**
+  ```json
+  {
+    "success": true
+  }
+  ```
+
+---
+
+## Authors
+
+### GET /api/authors/:id
+- **Description:** Get author profile.
+- **Response:**
+  ```json
+  {
+    "author": { ... }
+  }
+  ```
+
+### GET /api/authors/:id/articles
+- **Description:** Get articles by author.
+- **Query Parameters:** `page`, `limit`
+- **Response:**
+  ```json
+  {
+    "articles": [ ... ]
+  }
+  ```
+
+### POST /api/authors/:id/follow
+- **Description:** Follow an author (authenticated).
+- **Response:**
+  ```json
+  {
+    "success": true
+  }
+  ```
+
+---
+
+## User
+
+### GET /api/users/preferences
+- **Description:** Get user preferences (authenticated).
+- **Response:**
+  ```json
+  {
+    "preferences": { ... }
+  }
+  ```
+
+### PUT /api/users/preferences
+- **Description:** Update user preferences (authenticated).
+- **Request Body:**
+  ```json
+  {
+    "categories": ["uuid"],
+    "authors": ["uuid"],
+    "language": "en",
+    "timezone": "UTC",
+    "emailNotifications": true,
+    "pushNotifications": true,
+    "newsletter": false
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "preferences": { ... }
+  }
+  ```
+
+### GET /api/users/history
+- **Description:** Get user reading history (authenticated).
+- **Query Parameters:** `page`, `limit`
+- **Response:**
+  ```json
+  {
+    "history": [ ... ]
+  }
+  ```
+
+---
+
+## Subscriptions
+
+### GET /api/subscriptions/plans
+- **Description:** Get subscription plans.
+- **Response:**
+  ```json
+  {
+    "plans": [ ... ]
+  }
+  ```
+
+### POST /api/subscriptions/subscribe
+- **Description:** Subscribe to a plan (authenticated).
+- **Request Body:**
+  ```json
+  {
+    "planId": "uuid",
+    "paymentMethod": "stripe",
+    "paymentId": "payment-id",
+    "autoRenew": true
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "subscription": { ... }
+  }
+  ```
+
+### GET /api/subscriptions/status
+- **Description:** Get subscription status (authenticated).
+- **Response:**
+  ```json
+  {
+    "status": "active",
+    "plan": { ... }
+  }
+  ```
+
+---
+
+## Polls
+
+### GET /api/polls/active
+- **Description:** Get active polls.
+- **Response:**
+  ```json
+  {
+    "polls": [ ... ]
+  }
+  ```
+
+### POST /api/polls/:id/vote
+- **Description:** Vote on a poll (authenticated).
+- **Request Body:**
+  ```json
+  {
+    "optionIndex": 0
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "success": true
+  }
+  ```
+
+---
+
+## E-Paper
+
+### GET /api/epaper/editions
+- **Description:** Get e-paper editions.
+- **Response:**
+  ```json
+  {
+    "editions": [ ... ]
+  }
+  ```
+
+---
+
+## Notifications
+
+### GET /api/notifications/settings
+- **Description:** Get notification settings (authenticated).
+- **Response:**
+  ```json
+  {
+    "settings": { ... }
+  }
+  ```
+
+### PUT /api/notifications/settings
+- **Description:** Update notification settings (authenticated).
+- **Request Body:**
+  ```json
+  {
+    "emailNotifications": true,
+    "pushNotifications": true,
+    "smsNotifications": false
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "settings": { ... }
+  }
+  ```
+
+### POST /api/notifications/register-device
+- **Description:** Register device for push notifications.
+- **Request Body:**
+  ```json
+  {
+    "deviceToken": "fcm-device-token",
+    "platform": "ios"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "success": true
+  }
+  ```
+
+---
+
+## Search
+
+### GET /api/search
+- **Description:** Search articles, categories, authors.
+- **Query Parameters:** `q`, `category`, `author`, `dateFrom`, `dateTo`, `sortBy`, `order`, `page`, `limit`
+- **Response:**
+  ```json
+  {
+    "results": {
+      "articles": [ ... ],
+      "categories": [ ... ],
+      "authors": [ ... ]
+    },
+    "total": 42
+  }
+  ``` 

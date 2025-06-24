@@ -1,0 +1,43 @@
+# Digital News Platform ER Diagram (Mermaid)
+
+## How to Render and Export This Diagram as an Image
+
+1. **Copy the Mermaid code block below (everything between and including the ```mermaid and ``` lines).**
+2. **Go to [Mermaid Live Editor](https://mermaid.live).**
+3. **Paste the code into the editor on the left.**
+4. **If you see an error, make sure you are copying the code block exactly as shown, including the 'erDiagram' keyword and all indentation.**
+5. **The diagram will render on the right. Click the 'Download' or 'Export' button to save as PNG or SVG.**
+
+### Troubleshooting
+- If you see a syntax error, ensure there are no extra spaces or missing lines in the code block.
+- The code block must start with ```mermaid and end with ``` (on their own lines).
+- If you still have issues, try pasting only the lines starting from 'erDiagram' (without the triple backticks) into the Mermaid Live Editor.
+
+---
+
+```mermaid
+erDiagram
+  User ||--o{ Comment : "has"
+  User ||--o{ Bookmark : "has"
+  User ||--o{ BookmarkCollection : "has"
+  User ||--o{ ReadingHistory : "has"
+  User ||--o{ Subscription : "has"
+  User ||--o{ PollVote : "has"
+  User ||--o{ Notification : "has"
+  User ||--|| Author : "can be"
+  Author ||--o{ ArticleAuthor : "writes"
+  ArticleAuthor }o--|| Article : "for"
+  Article ||--o{ Comment : "has"
+  Article ||--o{ Bookmark : "can be bookmarked by"
+  Article ||--o{ ReadingHistory : "is read in"
+  Article ||--o{ MediaGallery : "has media"
+  Article ||--o{ BreakingNews : "can be in"
+  Article ||--o{ EPaper : "can be in"
+  Category ||--o{ Article : "has"
+  Category ||--o{ BreakingNews : "has"
+  Category ||--o{ Poll : "has"
+  Category ||--o{ Category : "has subcategory"
+  EPaperEdition ||--o{ EPaper : "has"
+  Poll ||--o{ PollVote : "has votes"
+  SubscriptionPlan ||--o{ Subscription : "has"
+``` 

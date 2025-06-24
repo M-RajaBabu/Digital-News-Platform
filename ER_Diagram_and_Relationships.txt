@@ -1,0 +1,713 @@
+# ER Diagram and Relationships
+
+## Tables and Columns
+
+### 1. User
+- id (PK)
+- email (unique)
+- username (unique)
+- password
+- firstName
+- lastName
+- avatar
+- bio
+- dateOfBirth
+- phone
+- location
+- preferences (JSON)
+- subscriptionStatus
+- subscriptionExpiry
+- isActive
+- createdAt
+- updatedAt
+
+### 2. Author
+- id (PK)
+- userId (FK → User.id)
+- penName
+- bio
+- specialization
+- experience
+- socialLinks (JSON)
+- isVerified
+- isActive
+- totalArticles
+- totalViews
+- totalFollowers
+- awards
+- contactEmail
+- preferences (JSON)
+- createdAt
+- updatedAt
+
+### 3. Category
+- id (PK)
+- name
+- slug (unique)
+- description
+- parentId (FK → Category.id, nullable)
+- icon
+- color
+- isActive
+- sortOrder
+- articleCount
+- viewCount
+- metaTitle
+- metaDescription
+- settings (JSON)
+- createdAt
+- updatedAt
+
+### 4. Article
+- id (PK)
+- title
+- slug (unique)
+- summary
+- content
+- excerpt
+- featuredImage
+- images (JSON)
+- videos (JSON)
+- categoryId (FK → Category.id)
+- tags (JSON)
+- readingTime
+- wordCount
+- viewCount
+- likeCount
+- commentCount
+- shareCount
+- bookmarkCount
+- status
+- isPremium
+- isBreaking
+- isTrending
+- isFeatured
+- publishedAt
+- scheduledAt
+- metaTitle
+- metaDescription
+- metaKeywords
+- settings (JSON)
+- language
+- location
+- source
+- sourceUrl
+- createdAt
+- updatedAt
+
+### 5. ArticleAuthor
+- id (PK)
+- articleId (FK → Article.id)
+- authorId (FK → Author.id)
+- role
+- order
+- createdAt
+- updatedAt
+
+### 6. Comment
+- id (PK)
+- articleId (FK → Article.id)
+- userId (FK → User.id)
+- parentId (FK → Comment.id, nullable)
+- content
+- status
+- upvotes
+- downvotes
+- createdAt
+- updatedAt
+
+### 7. Bookmark
+- id (PK)
+- userId (FK → User.id)
+- articleId (FK → Article.id)
+- collectionId (FK → BookmarkCollection.id, nullable)
+- notes
+- tags (JSON)
+- isPublic
+- createdAt
+- updatedAt
+
+### 8. BookmarkCollection
+- id (PK)
+- userId (FK → User.id)
+- name
+- description
+- color
+- icon
+- isPublic
+- createdAt
+- updatedAt
+
+### 9. ReadingHistory
+- id (PK)
+- userId (FK → User.id)
+- articleId (FK → Article.id)
+- readAt
+- duration
+- createdAt
+- updatedAt
+
+### 10. Subscription
+- id (PK)
+- userId (FK → User.id)
+- planId (FK → SubscriptionPlan.id)
+- status
+- startDate
+- endDate
+- autoRenew
+- paymentMethod
+- paymentId
+- createdAt
+- updatedAt
+
+### 11. SubscriptionPlan
+- id (PK)
+- name
+- price
+- duration
+- features (JSON)
+- isActive
+- createdAt
+- updatedAt
+
+### 12. BreakingNews
+- id (PK)
+- title
+- content
+- articleId (FK → Article.id, nullable)
+- categoryId (FK → Category.id, nullable)
+- priority
+- location
+- expiresAt
+- pushNotification
+- pushTitle
+- pushBody
+- createdAt
+- updatedAt
+
+### 13. Poll
+- id (PK)
+- question
+- description
+- options (JSON)
+- categoryId (FK → Category.id, nullable)
+- isPublic
+- allowMultipleVotes
+- requireLogin
+- endDate
+- showResults
+- showResultsAfterVote
+- createdAt
+- updatedAt
+
+### 14. PollVote
+- id (PK)
+- pollId (FK → Poll.id)
+- userId (FK → User.id)
+- optionIndex
+- createdAt
+- updatedAt
+
+### 15. MediaGallery
+- id (PK)
+- articleId (FK → Article.id, nullable)
+- type (photo/video)
+- url
+- caption
+- credit
+- metadata (JSON)
+- createdAt
+- updatedAt
+
+### 16. EPaperEdition
+- id (PK)
+- date (unique)
+- title
+- description
+- isPublished
+- publishedAt
+- totalPages
+- totalCities
+- totalDownloads
+- metadata (JSON)
+- createdAt
+- updatedAt
+
+### 17. EPaper
+- id (PK)
+- editionId (FK → EPaperEdition.id)
+- city
+- date
+- pages
+- downloadUrl
+- fileSize
+- isAvailable
+- downloadCount
+- viewCount
+- metadata (JSON)
+- createdAt
+- updatedAt
+
+### 18. Newsletter
+- id (PK)
+- email (unique)
+- firstName
+- lastName
+- preferences (JSON)
+- isActive
+- subscribedAt
+- unsubscribedAt
+- unsubscribeToken
+- lastEmailSent
+- emailCount
+- openCount
+- clickCount
+- createdAt
+- updatedAt
+
+### 19. NewsletterTemplate
+- id (PK)
+- name
+- subject
+- description
+- htmlContent
+- textContent
+- variables (JSON)
+- isActive
+- isDefault
+- category
+- frequency
+- createdBy (FK → User.id, nullable)
+- createdAt
+- updatedAt
+
+### 20. Notification
+- id (PK)
+- userId (FK → User.id)
+- type
+- content
+- isRead
+- createdAt
+- updatedAt
+
+
+## Relationships
+
+- User 1:N Comment (One user can have many comments)
+- User 1:N Bookmark (One user can have many bookmarks)
+- User 1:N BookmarkCollection (One user can have many collections)
+- User 1:N ReadingHistory (One user can have many reading history records)
+- User 1:N Subscription (One user can have many subscriptions)
+- User 1:N PollVote (One user can vote in many polls)
+- User 1:N Notification (One user can have many notifications)
+- User 1:1 Author (A user can be an author)
+- Author 1:N ArticleAuthor (One author can be linked to many articles)
+- Article 1:N Comment (One article can have many comments)
+- Article 1:N Bookmark (One article can be bookmarked by many users)
+- Article 1:N ReadingHistory (One article can be read by many users)
+- Article 1:N MediaGallery (One article can have many media items)
+- Article 1:N BreakingNews (One article can be linked to many breaking news)
+- Article 1:N EPaper (One article can be linked to many e-papers)
+- Article M:N Author (via ArticleAuthor)
+- Category 1:N Article (One category can have many articles)
+- Category 1:N BreakingNews (One category can have many breaking news)
+- Category 1:N Poll (One category can have many polls)
+- Category 1:N Subcategory (Self-referencing)
+- EPaperEdition 1:N EPaper (One edition can have many e-papers)
+- Poll 1:N PollVote (One poll can have many votes)
+- SubscriptionPlan 1:N Subscription (One plan can have many subscriptions)
+
+## ASCII ER Diagram (Simplified)
+
+User --< Comment
+User --< Bookmark
+User --< BookmarkCollection
+User --< ReadingHistory
+User --< Subscription
+User --< PollVote
+User --< Notification
+User --1 Author
+Author --< ArticleAuthor >-- Article
+Article --< Comment
+Article --< Bookmark
+Article --< ReadingHistory
+Article --< MediaGallery
+Article --< BreakingNews
+Article --< EPaper
+Category --< Article
+Category --< BreakingNews
+Category --< Poll
+Category --< Category (Subcategory)
+EPaperEdition --< EPaper
+Poll --< PollVote
+SubscriptionPlan --< Subscription 
+
+## ASCII Table Diagrams (Full Columns)
+
+### User
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| email               | STRING       | unique                      |
+| username            | STRING       | unique                      |
+| password            | STRING       |                             |
+| firstName           | STRING       |                             |
+| lastName            | STRING       |                             |
+| avatar              | STRING       |                             |
+| bio                 | TEXT         |                             |
+| dateOfBirth         | DATE         |                             |
+| phone               | STRING       |                             |
+| location            | STRING       |                             |
+| preferences         | JSON         |                             |
+| subscriptionStatus  | STRING       |                             |
+| subscriptionExpiry  | DATE         |                             |
+| isActive            | BOOLEAN      |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### Author
++------------------+--------------+-----------------------------+
+| Column           | Type         | Notes                       |
++------------------+--------------+-----------------------------+
+| id               | INTEGER      | PK                          |
+| userId           | INTEGER      | FK → User.id                |
+| penName          | STRING       |                             |
+| bio              | TEXT         |                             |
+| specialization   | STRING       |                             |
+| experience       | INTEGER      |                             |
+| socialLinks      | JSON         |                             |
+| isVerified       | BOOLEAN      |                             |
+| isActive         | BOOLEAN      |                             |
+| totalArticles    | INTEGER      |                             |
+| totalViews       | INTEGER      |                             |
+| totalFollowers   | INTEGER      |                             |
+| awards           | STRING       |                             |
+| contactEmail     | STRING       |                             |
+| preferences      | JSON         |                             |
+| createdAt        | DATE         |                             |
+| updatedAt        | DATE         |                             |
++------------------+--------------+-----------------------------+
+
+### Category
++-------------------+--------------+-----------------------------+
+| Column            | Type         | Notes                       |
++-------------------+--------------+-----------------------------+
+| id                | INTEGER      | PK                          |
+| name              | STRING       |                             |
+| slug              | STRING       | unique                      |
+| description       | TEXT         |                             |
+| parentId          | INTEGER      | FK → Category.id (nullable) |
+| icon              | STRING       |                             |
+| color             | STRING       |                             |
+| isActive          | BOOLEAN      |                             |
+| sortOrder         | INTEGER      |                             |
+| articleCount      | INTEGER      |                             |
+| viewCount         | INTEGER      |                             |
+| metaTitle         | STRING       |                             |
+| metaDescription   | STRING       |                             |
+| settings          | JSON         |                             |
+| createdAt         | DATE         |                             |
+| updatedAt         | DATE         |                             |
++-------------------+--------------+-----------------------------+
+
+### Article
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| title               | STRING       |                             |
+| slug                | STRING       | unique                      |
+| summary             | TEXT         |                             |
+| content             | TEXT         |                             |
+| excerpt             | TEXT         |                             |
+| featuredImage       | STRING       |                             |
+| images              | JSON         |                             |
+| videos              | JSON         |                             |
+| categoryId          | INTEGER      | FK → Category.id            |
+| tags                | JSON         |                             |
+| readingTime         | INTEGER      |                             |
+| wordCount           | INTEGER      |                             |
+| viewCount           | INTEGER      |                             |
+| likeCount           | INTEGER      |                             |
+| commentCount        | INTEGER      |                             |
+| shareCount          | INTEGER      |                             |
+| bookmarkCount       | INTEGER      |                             |
+| status              | STRING       |                             |
+| isPremium           | BOOLEAN      |                             |
+| isBreaking          | BOOLEAN      |                             |
+| isTrending          | BOOLEAN      |                             |
+| isFeatured          | BOOLEAN      |                             |
+| publishedAt         | DATE         |                             |
+| scheduledAt         | DATE         |                             |
+| metaTitle           | STRING       |                             |
+| metaDescription     | STRING       |                             |
+| metaKeywords        | STRING       |                             |
+| settings            | JSON         |                             |
+| language            | STRING       |                             |
+| location            | STRING       |                             |
+| source              | STRING       |                             |
+| sourceUrl           | STRING       |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### ArticleAuthor
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| articleId           | INTEGER      | FK → Article.id             |
+| authorId            | INTEGER      | FK → Author.id              |
+| role                | STRING       |                             |
+| order               | INTEGER      |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### Comment
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| articleId           | INTEGER      | FK → Article.id             |
+| userId              | INTEGER      | FK → User.id                |
+| parentId            | INTEGER      | FK → Comment.id (nullable)  |
+| content             | TEXT         |                             |
+| status              | STRING       |                             |
+| upvotes             | INTEGER      |                             |
+| downvotes           | INTEGER      |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### Bookmark
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| userId              | INTEGER      | FK → User.id                |
+| articleId           | INTEGER      | FK → Article.id             |
+| collectionId        | INTEGER      | FK → BookmarkCollection.id (nullable) |
+| notes               | TEXT         |                             |
+| tags                | JSON         |                             |
+| isPublic            | BOOLEAN      |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### BookmarkCollection
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| userId              | INTEGER      | FK → User.id                |
+| name                | STRING       |                             |
+| description         | TEXT         |                             |
+| color               | STRING       |                             |
+| icon                | STRING       |                             |
+| isPublic            | BOOLEAN      |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### ReadingHistory
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| userId              | INTEGER      | FK → User.id                |
+| articleId           | INTEGER      | FK → Article.id             |
+| readAt              | DATE         |                             |
+| duration            | INTEGER      |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### Subscription
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| userId              | INTEGER      | FK → User.id                |
+| planId              | INTEGER      | FK → SubscriptionPlan.id    |
+| status              | STRING       |                             |
+| startDate           | DATE         |                             |
+| endDate             | DATE         |                             |
+| autoRenew           | BOOLEAN      |                             |
+| paymentMethod       | STRING       |                             |
+| paymentId           | STRING       |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### SubscriptionPlan
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| name                | STRING       |                             |
+| price               | DECIMAL      |                             |
+| duration            | INTEGER      |                             |
+| features            | JSON         |                             |
+| isActive            | BOOLEAN      |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### BreakingNews
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| title               | STRING       |                             |
+| content             | TEXT         |                             |
+| articleId           | INTEGER      | FK → Article.id (nullable)  |
+| categoryId          | INTEGER      | FK → Category.id (nullable) |
+| priority            | INTEGER      |                             |
+| location            | STRING       |                             |
+| expiresAt           | DATE         |                             |
+| pushNotification    | BOOLEAN      |                             |
+| pushTitle           | STRING       |                             |
+| pushBody            | STRING       |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### Poll
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| question            | STRING       |                             |
+| description         | TEXT         |                             |
+| options             | JSON         |                             |
+| categoryId          | INTEGER      | FK → Category.id (nullable) |
+| isPublic            | BOOLEAN      |                             |
+| allowMultipleVotes  | BOOLEAN      |                             |
+| requireLogin        | BOOLEAN      |                             |
+| endDate             | DATE         |                             |
+| showResults         | BOOLEAN      |                             |
+| showResultsAfterVote| BOOLEAN      |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### PollVote
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| pollId              | INTEGER      | FK → Poll.id                |
+| userId              | INTEGER      | FK → User.id                |
+| optionIndex         | INTEGER      |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### MediaGallery
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| articleId           | INTEGER      | FK → Article.id (nullable)  |
+| type                | STRING       | photo/video                 |
+| url                 | STRING       |                             |
+| caption             | STRING       |                             |
+| credit              | STRING       |                             |
+| metadata            | JSON         |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### EPaperEdition
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| date                | DATE         | unique                      |
+| title               | STRING       |                             |
+| description         | TEXT         |                             |
+| isPublished         | BOOLEAN      |                             |
+| publishedAt         | DATE         |                             |
+| totalPages          | INTEGER      |                             |
+| totalCities         | INTEGER      |                             |
+| totalDownloads      | INTEGER      |                             |
+| metadata            | JSON         |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### EPaper
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| editionId           | INTEGER      | FK → EPaperEdition.id       |
+| city                | STRING       |                             |
+| date                | DATE         |                             |
+| pages               | INTEGER      |                             |
+| downloadUrl         | STRING       |                             |
+| fileSize            | INTEGER      |                             |
+| isAvailable         | BOOLEAN      |                             |
+| downloadCount       | INTEGER      |                             |
+| viewCount           | INTEGER      |                             |
+| metadata            | JSON         |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### Newsletter
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| email               | STRING       | unique                      |
+| firstName           | STRING       |                             |
+| lastName            | STRING       |                             |
+| preferences         | JSON         |                             |
+| isActive            | BOOLEAN      |                             |
+| subscribedAt        | DATE         |                             |
+| unsubscribedAt      | DATE         |                             |
+| unsubscribeToken    | STRING       |                             |
+| lastEmailSent       | DATE         |                             |
+| emailCount          | INTEGER      |                             |
+| openCount           | INTEGER      |                             |
+| clickCount          | INTEGER      |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### NewsletterTemplate
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| name                | STRING       |                             |
+| subject             | STRING       |                             |
+| description         | TEXT         |                             |
+| htmlContent         | TEXT         |                             |
+| textContent         | TEXT         |                             |
+| variables           | JSON         |                             |
+| isActive            | BOOLEAN      |                             |
+| isDefault           | BOOLEAN      |                             |
+| category            | STRING       |                             |
+| frequency           | STRING       |                             |
+| createdBy           | INTEGER      | FK → User.id (nullable)     |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+
+
+### Notification
++---------------------+--------------+-----------------------------+
+| Column              | Type         | Notes                       |
++---------------------+--------------+-----------------------------+
+| id                  | INTEGER      | PK                          |
+| userId              | INTEGER      | FK → User.id                |
+| type                | STRING       |                             |
+| content             | TEXT         |                             |
+| isRead              | BOOLEAN      |                             |
+| createdAt           | DATE         |                             |
+| updatedAt           | DATE         |                             |
++---------------------+--------------+-----------------------------+ 

@@ -1,0 +1,795 @@
+{
+  "info": {
+    "name": "Digital News Platform API",
+    "description": "Complete API collection for the Digital News Platform backend.\n\nNOTE:\n- Some endpoints require real IDs (e.g., articleId, categoryId). Use the 'Create' endpoints first and use the returned IDs in subsequent requests.\n- Some endpoints are placeholders or not yet implemented in the backend and may return 404 or a 'to be implemented' message.\n- If you get a 404 'Route not found', the endpoint does not exist in the backend.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"username\": \"testuser\",\n  \"password\": \"password123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"dateOfBirth\": \"1990-01-01\",\n  \"phone\": \"+1234567890\",\n  \"location\": \"New York\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('authToken', response.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Social Login (Google)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idToken\": \"google-id-token-here\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/social-login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "social-login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "News",
+      "item": [
+        {
+          "name": "Get Personalized Feed",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/news/feed?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "news", "feed"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Trending News",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/news/trending?timeWindow=24h&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "news", "trending"],
+              "query": [
+                {
+                  "key": "timeWindow",
+                  "value": "24h"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Breaking News",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/news/breaking",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "news", "breaking"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Articles",
+      "item": [
+        {
+          "name": "Get All Articles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/articles?page=1&limit=10&category=uuid&author=uuid",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "articles"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "category",
+                  "value": "uuid",
+                  "disabled": true
+                },
+                {
+                  "key": "author",
+                  "value": "uuid",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Article by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/articles/article-uuid-here",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "articles", "article-uuid-here"]
+            }
+          }
+        },
+        {
+          "name": "Create Article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"New Article Title\",\n  \"summary\": \"Article summary\",\n  \"content\": \"Article content here...\",\n  \"categoryId\": \"{{categoryId}}\",\n  \"tags\": [\"tag1\", \"tag2\"],\n  \"isPremium\": false,\n  \"isBreaking\": false,\n  \"featuredImage\": \"https://example.com/image.jpg\",\n  \"language\": \"en\",\n  \"location\": \"Global\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/articles",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "articles"]
+            },
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 201) {",
+                    "    const data = pm.response.json();",
+                    "    pm.collectionVariables.set('articleId', data.id);",
+                    "}"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Update Article",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Article Title\",\n  \"content\": \"Updated article content...\",\n  \"tags\": [\"updated\", \"tags\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/articles/article-uuid-here",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "articles", "article-uuid-here"]
+            }
+          }
+        },
+        {
+          "name": "Delete Article",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/articles/article-uuid-here",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "articles", "article-uuid-here"]
+            }
+          }
+        },
+        {
+          "name": "Track Article View",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/articles/article-uuid-here/view",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "articles", "article-uuid-here", "view"]
+            }
+          }
+        },
+        {
+          "name": "Get Article Comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/articles/article-uuid-here/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "articles", "article-uuid-here", "comments"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Post Comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"articleId\": \"{{articleId}}\",\n  \"content\": \"This is a great article!\",\n  \"parentId\": \"parent-comment-uuid\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "comments"]
+            }
+          }
+        },
+        {
+          "name": "Vote on Comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vote\": \"up\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/comments/comment-uuid-here/vote",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "comments", "comment-uuid-here", "vote"]
+            }
+          }
+        },
+        {
+          "name": "Moderate Comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\",\n  \"reason\": \"Comment is appropriate\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/comments/comment-uuid-here/moderate",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "comments", "comment-uuid-here", "moderate"]
+            }
+          }
+        },
+        {
+          "name": "Get Comments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/comments?articleId=uuid&status=approved",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "comments"],
+              "query": [
+                {
+                  "key": "articleId",
+                  "value": "uuid"
+                },
+                {
+                  "key": "status",
+                  "value": "approved"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Get Articles by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/category-uuid-here/articles?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categories", "category-uuid-here", "articles"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Category\",\n  \"description\": \"Description of the new category\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categories"]
+            },
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 201) {",
+                    "    const data = pm.response.json();",
+                    "    pm.collectionVariables.set('categoryId', data.id);",
+                    "}"
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookmarks",
+      "item": [
+        {
+          "name": "Get User Bookmarks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookmarks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookmarks"]
+            }
+          }
+        },
+        {
+          "name": "Add Bookmark",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"articleId\": \"{{articleId}}\",\n  \"collectionId\": \"{{collectionId}}\",\n  \"notes\": \"Personal notes about this article\",\n  \"tags\": [\"important\", \"read-later\"],\n  \"isPublic\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/bookmarks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookmarks"]
+            }
+          }
+        },
+        {
+          "name": "Remove Bookmark",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookmarks/bookmark-uuid-here",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bookmarks", "bookmark-uuid-here"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authors",
+      "item": [
+        {
+          "name": "Get Author Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/authors/author-uuid-here",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "authors", "author-uuid-here"]
+            }
+          }
+        },
+        {
+          "name": "Get Author's Articles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/authors/author-uuid-here/articles?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "authors", "author-uuid-here", "articles"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Follow Author",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/authors/author-uuid-here/follow",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "authors", "author-uuid-here", "follow"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get User Preferences",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/preferences",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "preferences"]
+            }
+          }
+        },
+        {
+          "name": "Update User Preferences",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categories\": [\"{{categoryId1}}\", \"{{categoryId2}}\"],\n  \"authors\": [\"{{authorId1}}\"],\n  \"language\": \"en\",\n  \"timezone\": \"UTC\",\n  \"emailNotifications\": true,\n  \"pushNotifications\": true,\n  \"newsletter\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/preferences",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "preferences"]
+            }
+          }
+        },
+        {
+          "name": "Get Reading History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/history?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "history"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "Get Subscription Plans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/subscriptions/plans",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "subscriptions", "plans"]
+            }
+          }
+        },
+        {
+          "name": "Subscribe to Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"planId\": \"{{planId}}\",\n  \"paymentMethod\": \"stripe\",\n  \"paymentId\": \"{{paymentId}}\",\n  \"autoRenew\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/subscriptions/subscribe",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "subscriptions", "subscribe"]
+            }
+          }
+        },
+        {
+          "name": "Get Subscription Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/subscriptions/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "subscriptions", "status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Polls",
+      "item": [
+        {
+          "name": "Get Active Polls",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/polls/active?limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "polls", "active"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Vote on Poll",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"optionIndex\": 0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/polls/poll-uuid-here/vote",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "polls", "poll-uuid-here", "vote"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Update Notification Settings",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emailNotifications\": true,\n  \"pushNotifications\": true,\n  \"smsNotifications\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications", "settings"]
+            }
+          }
+        },
+        {
+          "name": "Register Device for Push",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deviceToken\": \"fcm-device-token-here\",\n  \"platform\": \"ios\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications/register-device",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications", "register-device"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+} 

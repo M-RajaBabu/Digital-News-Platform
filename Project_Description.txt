@@ -1,0 +1,60 @@
+# Project Description
+
+## Overview
+The Digital News Platform backend is a comprehensive API-driven system designed to power a modern, feature-rich news website similar to Times of India. It provides robust user management, content publishing, personalization, subscriptions, notifications, and engagement features, all built with scalability and security in mind.
+
+## Core Functionality
+- **User Management:** Registration, authentication (including social login), profile management, preferences, and subscription status.
+- **Content Management:** Authors, categories, articles (with types, tags, images, and media gallery), and editorial workflows.
+- **Personalized News Feed:** AI-powered feed algorithm delivers relevant articles to each user based on their interests and reading history.
+- **Engagement:** Comments (with moderation and voting), bookmarks, reading history, polls, and notifications.
+- **Subscription System:** Multiple plans, payment tracking, premium content access, and e-paper editions.
+- **Analytics:** View tracking, engagement metrics, and trending calculations.
+- **Moderation:** Profanity filter and comment moderation tools.
+- **Real-Time Features:** Breaking news alerts and push notification support.
+
+## Problem Solved
+This backend solves the challenge of delivering a scalable, secure, and highly interactive news experience. It enables:
+- Personalized content delivery for each user
+- Secure user authentication and premium content gating
+- Real-time updates for breaking news
+- Community engagement through comments, polls, and bookmarks
+- Efficient editorial and content management for newsrooms
+
+## Major Modules/Components
+- **Authentication & Authorization** (JWT, social login)
+- **User Profiles & Preferences**
+- **Authors & Journalists**
+- **Categories & Subcategories**
+- **Articles & Editorial Content**
+- **Comments & Moderation**
+- **Bookmarks & Collections**
+- **Reading History & Analytics**
+- **Subscriptions & Payments**
+- **Breaking News & Notifications**
+- **Polls & User Engagement**
+- **Media Gallery (Photos/Videos)**
+- **E-Paper Editions**
+- **Search & Discovery**
+- **Weather & Games (Bonus)**
+
+## Technologies Used
+- **Node.js** (Express.js framework)
+- **SQLite** (development database)
+- **Sequelize** (ORM)
+- **JWT** (authentication)
+- **Joi** (validation)
+- **bcrypt** (password hashing)
+- **Helmet, CORS** (security)
+- **express-rate-limit** (rate limiting)
+- **Postman** (API documentation/testing)
+
+## Unique Features & Specialties
+- **Personalized news feed algorithm**
+- **Trending and analytics engine**
+- **Real-time breaking news and push notification support**
+- **Comprehensive moderation and profanity filtering**
+- **Newsletter and e-paper support**
+- **Bonus: Weather, games, and crosswords APIs**
+
+This backend is designed for extensibility, security, and high engagement, making it suitable for any modern digital news platform. 
