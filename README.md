@@ -528,6 +528,3 @@ npm run dev
 - [ ] All endpoints tested with the provided Postman collection
 - [ ] README is up to date
 - [ ] Database is seeded and API is working at http://localhost:3000
-
-## 🚀 Ready to Push
-If all boxes are checked, you are ready to push your project to GitHub! 
